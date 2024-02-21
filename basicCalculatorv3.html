@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<HTML>
+  <HEAD>
+    <META charset="UTF-8"/>
+    <META name="viewport" content="width=device-initial-width, initial-scale=1.0"/>
+    <STYLE>
+      *{
+        font-family: sans-serif;
+        margin: 0px;
+      }
+
+      body{
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .header h1{
+          text-align: center;
+          padding: 50px;
+      }
+
+      .calculator{
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+        margin-bottom: 5%;
+      }
+
+      .calculator td{
+        text-align: center;
+        border: 0px;
+      }
+
+      .calculator td a{
+        text-decoration: none;
+        border: 1px solid #000;
+        display: block;
+        padding: 15px;
+        margin: -15px;
+        color: #000;
+        background-color: #9B9F9F;
+      }
+
+      .calculator a:hover{
+        color: #000;
+        background-color: #5F5F5F;
+      }
+
+      .credentials{
+        display: flex;
+        justify-content: right;
+        padding: 50px;
+      }
+
+      .credentials #credit{
+        color: #000;
+        font-style: italic;
+      }
+
+      .credentials #cover{
+        background-color: #FFF;
+        display: inline;
+        position: relative;
+        transition: 1.5s;
+        padding: 10px 55px;
+        right: 88px;
+      }
+    </STYLE>
+    <SCRIPT>
+      var display=0;
+      var num1=0;
+      var num2=0;
+      var opr=null;
+      var toggle=0;
+      var dec=0;
+
+      function enter(number)
+      {
+          display=number+(display*10);
+          if(opr === null)
+          {
+            if(dec === 0)
+              num1=display;
+
+            else
+            {
+              num1=num1+(0.1*number);
+              dec=0;
+            }
+          }
+
+          else
+          {
+            if(toggle === 1)
+              toggle=0;
+            if(dec === 0)
+              num2=display;
+
+            else
+            {
+              num2=num2+(0.1*number);
+              dec=0;
+            }
+          }
+
+          document.getElementById("result").textContent = num1+opr+num2;
+
+          /*test variables*/
+          document.getElementById("num1").textContent = num1;
+          document.getElementById("num2").textContent = num2;
+          document.getElementById("opr").textContent = opr;
+          document.getElementById("toggle").textContent = toggle;
+          document.getElementById("dec").textContent = dec;
+      }
+
+      function operate(operator)
+      {
+        if(num2 != 0)
+          return;
+        switch(operator)
+        {
+          case '+':
+            opr='+';
+            break;
+
+          case '-':
+            opr='-';
+            break;
+
+          case '*':
+            opr='*';
+            break;
+
+          case '/':
+            opr='/';
+            break;
+
+          default:
+            alert("Invalid opertor passed. Please check code.<error code=#000>")
+            return;
+        }
+        if(toggle=0)
+          num1=display;
+        display=0;
+        document.getElementById("result").textContent = num1+opr;
+
+        /*test variables*/
+        document.getElementById("num1").textContent = num1;
+        document.getElementById("num2").textContent = num2;
+        document.getElementById("opr").textContent = opr;
+        document.getElementById("toggle").textContent = toggle;
+        document.getElementById("dec").textContent = dec;
+      }
+
+      function decimal()
+      {
+        dec=1;
+        if(opr === null)
+          document.getElementById("result").textContent = num1+'.';
+        else
+          document.getElementById("result").textContent = num1+opr+num2+'.';
+        /*test variables*/
+        document.getElementById("num1").textContent = num1;
+        document.getElementById("num2").textContent = num2;
+        document.getElementById("opr").textContent = opr;
+        document.getElementById("toggle").textContent = toggle;
+        document.getElementById("dec").textContent = dec;
+      }
+
+      function calculate()
+      {
+        if(opr === null)
+        {
+          document.getElementById("result").textContent = num1;
+        }
+
+        else
+        {
+          switch(opr)
+          {
+            case '+':
+              num1=num1+num2;
+              document.getElementById("result").textContent = num1;
+              break;
+
+            case '-':
+              num1=num1-num2;
+              document.getElementById("result").textContent = num1;
+              break;
+
+            case '*':
+              num1=num1*num2;
+              document.getElementById("result").textContent = num1;
+              break;
+
+            case '/':
+              if(num2 === 0)
+              {
+                document.getElementById("result").textContent = "division by 0 is not possible.";
+                return;
+              }
+              num1=num1/num2;
+              document.getElementById("result").textContent = num1;
+              break;
+
+            default:
+              alert("Invalid operator passed. Please check code.<error code=#001>")
+              return;
+          }
+          toggle=1;
+          dec=0;
+          opr=null;
+          num2=0;
+        }
+
+        /*test variables*/
+        document.getElementById("num1").textContent = num1;
+        document.getElementById("num2").textContent = num2;
+        document.getElementById("opr").textContent = opr;
+        document.getElementById("toggle").textContent = toggle;
+        document.getElementById("dec").textContent = dec;
+      }
+
+      function clearDisplay()
+      {
+        display=0;
+        document.getElementById("result").textContent = 0;
+        opr=null;
+        num1=0;
+        num2=0;
+        toggle=0;
+        dec=0;
+
+        /*test variables*/
+        document.getElementById("num1").textContent = num1;
+        document.getElementById("num2").textContent = num2;
+        document.getElementById("opr").textContent = opr;
+        document.getElementById("toggle").textContent = toggle;
+        document.getElementById("dec").textContent = dec;
+      }
+
+      function showSourceCodeCredentials()
+      {
+        document.getElementById("cover").style.right = "-88px";
+      }
+
+      function hideSourceCodeCredentials()
+      {
+        document.getElementById("cover").style.right = "88px";
+      }
+    </SCRIPT>
+    <TITLE>Basic Calculator v3</TITLE>
+  </HEAD>
+  <BODY>
+    <DIV class="header">
+      <H1>Basic Calculator</H1>
+    </DIV>
+
+    <DIV class="calculator">
+      <TABLE border="5px" cellpadding="15px" style="background-color: #505050;">
+        <TR style="background-color: #5090FF;">
+          <TD colspan="4" style="border: 1px solid #000; text-align: right;"><SPAN id="result">&nbsp;</SPAN></TD>
+        </TR>
+
+        <TR>
+          <TD><A href="javascript:enter(1)">1</A></TD>
+          <TD><A href="javascript:enter(2)">2</A></TD>
+          <TD><A href="javascript:enter(3)">3</A></TD>
+          <TD><A href="javascript:operate('+')">+</A></TD>
+        </TR>
+
+        <TR>
+          <TD><A href="javascript:enter(4)">4</A></TD>
+          <TD><A href="javascript:enter(5)">5</A></TD>
+          <TD><A href="javascript:enter(6)">6</A></TD>
+          <TD><A href="javascript:operate('-')">-</A></TD>
+        </TR>
+
+        <TR>
+          <TD><A href="javascript:enter(7)">7</A></TD>
+          <TD><A href="javascript:enter(8)">8</A></TD>
+          <TD><A href="javascript:enter(9)">9</A></TD>
+          <TD><A href="javascript:operate('*')">*</A></TD>
+        </TR>
+
+        <TR>
+          <TD><A href="javascript:clearDisplay()">CLR</A></TD>
+          <TD><A href="javascript:enter(0)">&nbsp;&nbsp;0&nbsp;&nbsp;</A></TD>
+          <TD><A href="javascript:decimal()">&nbsp;&nbsp;.&nbsp;&nbsp;</A></TD>
+          <TD><A href="javascript:operate('/')">/</A></TD>
+        </TR>
+
+        <TR>
+          <TD colspan="4"><A href="javascript:calculate()">=</A></TD>
+        </TR>
+      </TABLE>
+    </DIV>
+
+    <!--Erase this
+    <DIV class="test_area">
+      <P>num1=<SPAN id="num1"></SPAN></P>
+      <P>num2=<SPAN id="num2"></SPAN></P>
+      <P>opr=<SPAN id="opr"></SPAN></P>
+      <P>toggle=<SPAN id="toggle"></SPAN></P>
+      <P>dec=<SPAN id="dec"></SPAN></P>
+    </DIV>
+    to enable debugger-->
+
+    <DIV class="credentials">
+      <P><SPAN id ="credit" onmouseover="showSourceCodeCredentials()" onmouseout="hideSourceCodeCredentials()">@Kuriyaachan</SPAN><SPAN id="cover"></SPAN><P>
+    </DIV>
+  </BODY>
+</HTML>
